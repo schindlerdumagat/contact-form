@@ -8,45 +8,67 @@
   
   <title>Frontend Mentor | Contact form</title>
 
-  <!-- Feel free to remove these styles or customise in your own stylesheet 👍 -->
-  <style>
-    .attribution { font-size: 11px; text-align: center; }
-    .attribution a { color: hsl(228, 45%, 44%); }
-  </style>
+  <link rel="preload" href="./assets/fonts/karla-v33-latin-regular.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+  <link rel="preload" href="./assets/fonts/karla-v33-latin-700.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
+  <main>
+    <form class="form" aria-labelledby="form-title" novalidate>
+      <h2 class="form__title" id="form-title" >Contact Us</h2>
+      <div class="form__fields">
+        <div class="form__name">
+          <div class="form__field form__first-name">
+            <label class="form__label" for="first-name">First Name <span class="form__required" aria-label="Required field">*</span></label>
+            <input class="form__input" type="text" id="first-name" name="firstName" autocomplete="given-name" required aria-describedby="first-name-error">
+            <span class="form__error" id="first-name-error" aria-live="polite"></span>
+          </div>
+          <div class="form__field form__last-name">
+            <label class="form__label" for="last-name">Last Name <span class="form__required" aria-label="Required field">*</span></label>
+            <input class="form__input" type="text" id="last-name" name="lastName" autocomplete="family-name" required aria-describedby="last-name-error">
+            <span class="form__error" id="last-name-error" aria-live="polite"></span>
+          </div>
+        </div>
+        <div class="form__field form__email">
+          <label class="form__label" for="email">Email Address <span class="form__required" aria-label="Required field">*</span></label>
+          <input class="form__input" type="email" id="email" name="email" autocomplete="email" required aria-describedby="email-error">
+          <span class="form__error" id="email-error" aria-live="polite"></span>
+        </div>
+        <fieldset class="form__query">
+          <legend class="form__label form__query-title">Query Type <span class="form__required" aria-label="Required field">*</span></legend>
+          <div class="form__query-options">
+            <div class="form__input form__query-option">
+              <input class="form__query-input" type="radio" id="general-inquiry" name="queryType" value="general-inquiry" required aria-describedby="query-error">
+              <label class="form__query-label" for="general-inquiry">General Inquiry</label>
+            </div>
+            <div class="form__input form__query-option">
+              <input class="form__query-input" type="radio" id="support-request" name="queryType" value="support-request">
+              <label class="form__query-label" for="support-request">Support Request</label>
+            </div>
+          </div>
+          <span class="form__error form__query-error" id="query-error" aria-live="polite"></span>
+        </fieldset>
+        <div class="form__field form__message">
+          <label class="form__label" for="message">Message <span class="form__required" aria-label="Required field">*</span></label>
+          <textarea class="form__input" id="message" name="message" aria-describedby="message-error" required></textarea>
+          <span class="form__error" id="message-error" aria-live="polite"></span>
+        </div>
+      </div>
 
-  Contact Us
+      <div class="form__consent">
+        <div class="form__consent-field">
+          <input class="form__consent-input" type="checkbox" id="consent" name="consent" required aria-describedby="consent-error">
+          <label class="form__label" for="consent">I consent to being contacted by the team <span class="form__required" aria-label="Required field">*</span></label>
+        </div>
+        <span class="form__error form__consent-error" id="consent-error" aria-live="polite"></span>
+      </div>
 
-  First Name
-  This field is required
+      <button class="form__submit" type="submit">Submit</button>
 
-  Last Name
-  This field is required
-
-  Email Address
-  Please enter a valid email address
-  This field is required
-
-  Query Type
-  General Enquiry
-  Support Request
-  Please select a query type
-
-  Message
-  This field is required
-
-  I consent to being contacted by the team
-  To submit this form, please consent to being contacted
-
-  Submit
-
-  Message Sent!
-  Thanks for completing the form. We'll be in touch soon!
-  
-  <div class="attribution">
-    Challenge by <a href="https://www.frontendmentor.io?ref=challenge">Frontend Mentor</a>. 
-    Coded by <a href="#">Your Name Here</a>.
-  </div>
+    </form>
+  </main>
+  <script src="./scripts/script.js"></script>
 </body>
 </html>
+  

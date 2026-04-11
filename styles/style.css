@@ -1,0 +1,337 @@
+/* CSS RESET */
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Prevent font size inflation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* Set shorter line heights on interactive elements */
+button, input, label {
+  line-height: 1.5;
+}
+
+h1, h2 {
+  line-height: 1;      /* Set shorter line heights on headings */
+  text-wrap: balance;  /* Balance text wrapping on headings */
+}
+
+/* Make images easier to work with */
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input, button,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+}
+
+/* Make sure textareas without a rows attribute are not tiny */
+textarea:not([rows]) {
+  min-height: 10em;
+}
+
+/* FONTS */
+
+/* karla-regular - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Karla';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../assets/fonts/karla-v33-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+/* karla-700 - latin */
+@font-face {
+  font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+  font-family: 'Karla';
+  font-style: normal;
+  font-weight: 700;
+  src: url('../assets/fonts/karla-v33-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+}
+
+/* CUSTOM VARIABLES */
+
+:root {
+
+    /* COLORS */
+
+    --clr-grey-900: hsl(187, 24%, 22%);
+    --clr-grey-500: hsl(186, 15%, 59%);
+    --clr-green-600: hsl(169, 82%, 27%);
+    --clr-green-200: hsl(148, 38%, 91%);
+    --clr-red: hsl(0, 66%, 54%);
+    --clr-white: hsl(0, 0%, 100%);
+
+    /* TYPOGRAPHY */
+
+    --ff-main: "Karla", sans-serif;
+    --fs-header: 2rem;
+    --fs-body: 1rem;
+    --fs-input: 1.125rem;
+
+    /* SPACINGS */
+
+    --space-1600: 8rem;
+    --space-500: 2.5rem;
+    --space-400: 2rem;
+    --space-300: 1.5rem;
+    --space-200: 1rem;
+    --space-150: .75rem;
+    --space-100: .5rem;
+
+    --space-fluid-200: clamp(1rem, -0.4313rem + 6.1069vw, 2.5rem);
+    --space-fluid-300: clamp(1.5rem, 0.5458rem + 4.0712vw, 2.5rem);
+    --space-fluid-400: clamp(2rem, -3.7252rem + 24.4275vw, 8rem);
+
+    /* BORDER RADIUS */
+
+    --rounded-xs: 8px;
+    --rounded-sm: 12px;
+    --rounded-md: 16px;
+}
+
+body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-family: var(--ff-main);
+    font-size: var(--fs-body);
+    font-weight: 400;
+    color: var(--clr-grey-900);
+    background-color: var(--clr-green-200);
+    padding-inline: var(--space-fluid-200);
+    padding-block: var(--space-fluid-400);
+}
+
+.form {
+    background-color: var(--clr-white);
+    border-radius: var(--rounded-md);
+    padding: var(--space-fluid-300);
+    width: min(46rem, 100%);
+    margin: 0 auto;
+}
+
+.form__title {
+    font-size: var(--fs-header);
+    font-weight: 700;
+    margin-block-end: var(--space-400);
+}
+
+.form__fields {
+    display: grid;
+    gap: var(--space-300);
+}
+
+.form__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-100);
+}
+
+.form__required {
+    margin-inline-start: var(--space-100);
+    color: var(--clr-green-600);
+}
+
+.form__input {
+    font-size: var(--fs-input);
+    border: 1px solid var(--clr-grey-500);
+    border-radius: var(--rounded-xs);
+    padding: var(--space-150) var(--space-300);
+}
+
+.form__input--error:not(:hover, :focus) {
+    border-color: var(--clr-red);
+}
+
+.form__input:is(:hover, :focus) {
+    outline: 1px solid var(--clr-green-600);
+}
+
+.form__error {
+    display: none;
+    color: var(--clr-red);
+}
+
+.form__name {
+    display: grid;
+    gap: var(--space-300);
+}
+
+.form__first-name--error .form__input:not(:focus, :hover) {
+    border-color: var(--clr-red);
+}
+
+.form__first-name--error .form__error {
+    display: block;
+}
+
+.form__last-name--error .form__input:not(:focus, :hover) {
+    border-color: var(--clr-red);
+}
+
+.form__last-name--error .form__error {
+    display: block;
+}
+
+.form__email--error .form__input:not(:focus, :hover) {
+    border-color: var(--clr-red);
+}
+
+.form__email--error .form__error {
+    display: block;
+}
+
+.form__query {
+    border: none;
+}
+
+.form__query--error .form__error {
+    display: block;
+}
+
+.form__query-title {
+    margin-block-end: var(--space-200);
+}
+
+.form__query-options {
+    display: grid;
+    gap: var(--space-200);
+}
+
+.form__query-option:has(.form__query-input:focus) {
+    outline: 1px solid var(--clr-green-600);
+    background-color: var(--clr-green-200);   
+}
+
+.form__query-option:has(.form__query-input:not(:focus):checked) {
+    border: 2px solid var(--clr-green-600);
+    background-color: var(--clr-green-200);   
+}
+
+.form__query-label {
+    font-size: var(--fs-input);
+}
+
+.form__query-input {
+    margin-inline-end: var(--space-150);
+}
+
+.form__query-error {
+    margin-block-start: var(--space-200);
+}
+
+.form__message--error .form__input:not(:focus, :hover) {
+    border-color: var(--clr-red);
+}
+
+.form__message--error .form__error {
+    display: block;
+}
+
+.form__consent {
+    margin-block: var(--space-500);
+}
+
+.form__consent--error .form__error {
+    display: block;
+}
+
+.form__consent-field {
+    display: flex;
+    gap: var(--space-200);
+}
+
+.form__consent-error {
+    margin-block-start: var(--space-100);
+}
+
+.form__submit {
+    color: var(--clr-white);
+    width: 100%;
+    padding: var(--space-200);
+    background-color: var(--clr-green-600);
+    border: 1px solid var(--clr-green-600);
+    border-radius: var(--rounded-xs);
+    cursor: pointer;
+    transition: background-color 200ms ease;
+}
+
+.form__submit:hover {
+    background-color: var(--clr-grey-900);
+}
+
+.form__submit:focus-within {
+    outline: 2px solid var(--clr-green-600);
+    outline-offset: 2px;
+}
+
+.toast {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    background-color: var(--clr-grey-900);
+    border-radius: var(--rounded-sm);
+    padding: var(--space-300);
+    max-width: 28.125rem;
+    margin: 0 auto;
+    animation: slideIn 800ms ease forwards;
+}   
+
+.toast__header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-100);
+    margin-block-end: var(--space-100);
+}
+
+.toast__title {
+    font-size: var(--fs-input);
+    color: var(--clr-white);
+}
+
+.toast__message {
+    color: var(--clr-green-200);
+}
+
+@keyframes slideIn {
+    from {
+        transform: translate(-50%, 0);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 30%);
+        opacity: 1;
+    }
+}
+
+@media screen and (min-width: 48rem) {
+
+    .form__name, .form__query-options {
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--space-200);
+    }
+
+}
