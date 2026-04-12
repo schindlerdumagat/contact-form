@@ -30,6 +30,7 @@ form.addEventListener("submit", (e) => {
 
     const { firstName, lastName, email, queryType, message, consent } = data;
 
+    // Validates each values
     const firstNameResult = validateName(firstName, firstNameInput, firstNameError);
     const lastNameResult = validateName(lastName, lastNameInput, lastNameError);
     const emailResult = validateEmail(email);
@@ -37,73 +38,171 @@ form.addEventListener("submit", (e) => {
     const messageResult = validateMessage(message);
     const consentResult = validateConsent(consent);
 
+    // Checks if all fields are valid
     if (firstNameResult && lastNameResult && emailResult && 
         queryTypeResult && messageResult && consentResult) {
             showSuccessMessage();
             return;
         }
     
+    // If form has error, focus will go to the first input with error
     focusFirstInputError();
     formState.hasAttemptedSubmit = true;
 });
 
 firstNameInput.addEventListener("input", (e) => {
 
-    if (formState.hasAttemptedSubmit) {
-        validateName(e.target.value, firstNameInput, firstNameError);
-    }
+    if (!formState.hasAttemptedSubmit) return;
+    validateName(e.target.value, firstNameInput, firstNameError);
 
-})
+});
 
 lastNameInput.addEventListener("input", (e) => {
 
-    if (formState.hasAttemptedSubmit) {
-        validateName(e.target.value, lastNameInput, lastNameError);
-    }
+    if (!formState.hasAttemptedSubmit) return;
+    validateName(e.target.value, lastNameInput, lastNameError);
 
-})
+});
 
 emailInput.addEventListener("input", (e) => {
 
-    if (formState.hasAttemptedSubmit) {
-        validateEmail(e.target.value);
-    }
+    if (!formState.hasAttemptedSubmit) return;
+    validateEmail(e.target.value);
 
-})
-
-queryInputs.forEach(queryInput => {
-    queryInput.addEventListener("change", (e) => {
-
-        if (e.target.checked) {
-            queryError.textContent = "";
-            queryError.classList.remove("form__error--active")
-        }
-
-    })
-})
+});
 
 messageInput.addEventListener("input", (e) => {
 
-    if (formState.hasAttemptedSubmit) {
-        validateMessage(e.target.value);
-    }
+    if (!formState.hasAttemptedSubmit) return;
+    validateMessage(e.target.value);
+    
+});
 
+queryInputs.forEach(queryInput => {
+    queryInput.addEventListener("change", (e) => {
+        handleSelectionEvent(e, queryError, "Please select a query type");
+    })
 })
 
 consentInput.addEventListener("change", (e) => {
+    handleSelectionEvent(e, consentError, "To submit this form, please consent to being contacted");
 
-    if (formState.hasAttemptedSubmit) {
+});
 
-        if(e.target.checked) {
-            consentError.textContent = "";
-            consentError.classList.remove("form__error--active");
-        } else {
-            consentError.textContent = "To submit this form, please consent to being contacted";
-            consentError.classList.add("form__error--active");
+function handleSelectionEvent(e, error, errorMessage) {
+
+    if (!formState.hasAttemptedSubmit) return;
+
+    if(e.target.checked) {
+        error.textContent = "";
+        error.classList.remove("form__error--active");
+    } else {
+        error.textContent = errorMessage;
+        error.classList.add("form__error--active");
+    }
+}
+
+function validateName(value, input, error) {
+    
+    const validationItems = ["isEmpty"];
+    const isValid = checkTextField(input, error, validations, validationItems, value);
+
+    return isValid;
+
+}
+
+function validateEmail(value) {
+
+    const validationItems = ["isEmpty", "isEmail"];
+    const isValid = checkTextField(emailInput, emailError, validations, validationItems, value);
+
+    return isValid;
+
+}
+
+function validateMessage(value) {
+
+    const validationItems = ["isEmpty", "isWithinRange"];
+    const isValid = checkTextField(messageInput, messageError, validations, validationItems, value);
+
+    return isValid;
+
+}
+
+function validateQueryType(value) {
+
+    const validationItems = ["hasQueryValue"];
+    const isValid = checkSelectionField(value, validations, validationItems, queryError);
+    return isValid;
+
+}
+
+function validateConsent(value) {
+
+    const validationItems = ["isChecked"];
+    const isValid = checkSelectionField(value, validations, validationItems, consentError);
+    return isValid;
+
+}
+
+// Checks the validity of text fields against the validations requirements
+function checkTextField(input, error, validations, validationItems, value) {
+
+    const updateErrorUIFunc = (isValid, result) => updateTextFieldError(isValid, input, error, result);
+    const isValid = runFieldChecks(value, validations, validationItems, updateErrorUIFunc);
+    return isValid;
+}
+
+// Checks the validity of selection fields against the validations requirements
+function checkSelectionField(value, validations, validationItems, error) {
+
+    const updateErrorUIFunc = (isValid, result) => updateSelectionFieldError(isValid, error, result);
+    const isValid = runFieldChecks(value, validations, validationItems, updateErrorUIFunc);
+    return isValid;
+}
+
+function runFieldChecks(value, validations, validationItems, updateErrorUIFunc) {
+    let isValid = false;
+
+    for(const item of validationItems) {
+        const result = validations[item](value);
+        isValid = !result;
+
+        updateErrorUIFunc(isValid, result);
+        if (!isValid) {
+            break;
         }
     }
 
-});
+    return isValid;
+}
+
+// Updates the error states (input classes and error messages) of text fields.
+function updateTextFieldError(isValid, input, error, result) {
+
+    if (isValid) {
+        error.textContent = "";
+        error.classList.remove("form__error--active");
+        input.classList.remove("form__input--error");
+    } else {
+        error.textContent = result;
+        error.classList.add("form__error--active");
+        input.classList.add("form__input--error");
+    }
+
+}
+
+function updateSelectionFieldError(isValid, error, result) {
+
+    if(isValid) {
+        error.textContent = "";
+        error.classList.remove("form__error--active");
+    } else {
+        error.textContent = result;
+        error.classList.add("form__error--active");
+    }
+
+}
 
 // Displays the success message upon successful form submission
 function showSuccessMessage () {
@@ -118,11 +217,14 @@ function showSuccessMessage () {
     `;
 
     document.body.insertAdjacentHTML("afterbegin", toastElementString);
+
+    // Resets the form to its original state
     form.reset();
     formState.hasAttemptedSubmit = false;
 }
 
-// This brings the user to the first error in the form
+// This brings the user to the first input field with error in the form.
+// Prioritizes errors at the very top.
 function focusFirstInputError() {
 
     const fields = [firstNameInput, lastNameInput, emailInput];
@@ -152,101 +254,7 @@ function focusFirstInputError() {
 
 }
 
-function validateName(value, inputField, inputError) {
-    
-    const result = validations["isEmpty"](value);
-
-    if (result) {
-        inputError.textContent = result;
-        inputField.classList.add("form__input--error");
-        inputError.classList.add("form__error--active")
-        return false;
-    }
-
-    inputError.textContent = "";
-    inputField.classList.remove("form__input--error");
-    inputError.classList.remove("form__error--active");
-    
-    return true;
-
-}
-
-function validateEmail(value) {
-
-    const validationItems = ["isEmpty", "isEmail"];
-    
-    for (const item of validationItems) {
-        const result = validations[item](value);
-        if (result) {
-            emailError.textContent = result;
-            emailError.classList.add("form__error--active");
-            emailInput.classList.add("form__input--error");
-            return false;
-        }
-    }
-
-    emailError.textContent = "";
-    emailError.classList.remove("form__error--active");
-    emailInput.classList.remove("form__input--error");
-
-    return true;
-
-}
-
-function validateQueryType(value) {
-
-    const result = validations["hasQueryValue"](value);
-
-    if (result) {
-        queryError.textContent = result;
-        queryError.classList.add("form__error--active");
-        return false;
-    } else {
-        queryError.textContent = "";
-        queryError.classList.remove("form__error--active");
-        return true;
-    }
-
-}
-
-function validateMessage(value) {
-
-    const validationItems = ["isEmpty", "isWithinRange"];
-    
-    for (const item of validationItems) {
-        const result = validations[item](value);
-        if (result) {
-            messageError.textContent = result;
-            messageError.classList.add("form__error--active");
-            messageInput.classList.add("form__input--error");
-            return false;
-        }
-    }
-
-    messageError.textContent = "";
-    messageError.classList.remove("form__error--active");
-    messageInput.classList.remove("form__input--error");
-
-    return true;
-
-}
-
-function validateConsent(value) {
-
-    const result = validations["isChecked"](value);
-
-    if (result) {
-        consentError.textContent = result;
-        consentError.classList.add("form__error--active");
-        return false;
-    } else {
-        consentError.textContent = "";
-        consentError.classList.remove("form__error--active");
-        return true;
-    }
-
-}
-
+// List of all the validations that can be performed
 const validations = {
     isEmpty: (value) => value.trim().length === 0 && "This field is required",
     isEmail: (value) => !validEmailRegex.test(value) && "Please enter a valid email address",
