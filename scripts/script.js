@@ -31,50 +31,59 @@ form.addEventListener("submit", (e) => {
     const { firstName, lastName, email, queryType, message, consent } = data;
 
     // Validates each values
-    const firstNameResult = validateName(firstName, firstNameInput, firstNameError);
-    const lastNameResult = validateName(lastName, lastNameInput, lastNameError);
-    const emailResult = validateEmail(email);
+    const firstNameResult = validateName(firstName.trim(), firstNameInput, firstNameError);
+    const lastNameResult = validateName(lastName.trim(), lastNameInput, lastNameError);
+    const emailResult = validateEmail(email.trim());
     const queryTypeResult = validateQueryType(queryType);
-    const messageResult = validateMessage(message);
-    const consentResult = validateConsent(consent);
+    const messageResult = validateMessage(message.trim());
+    const consentResult = validateConsent(consent); 
 
     // Checks if all fields are valid
-    if (firstNameResult && lastNameResult && emailResult && 
-        queryTypeResult && messageResult && consentResult) {
+    const allValid = firstNameResult && lastNameResult && emailResult && queryTypeResult && messageResult && consentResult;
+    if (allValid) {
             showSuccessMessage();
             return;
         }
     
     // If form has error, focus will go to the first input with error
-    focusFirstInputError();
+    const formResult = {
+        firstName: firstNameResult,
+        lastName: lastNameResult,
+        email: emailResult,
+        queryType: queryTypeResult,
+        message: messageResult,
+        consent: consentResult,
+    };
+
+    focusFirstInputError(formResult);
     formState.hasAttemptedSubmit = true;
 });
 
 firstNameInput.addEventListener("input", (e) => {
 
     if (!formState.hasAttemptedSubmit) return;
-    validateName(e.target.value, firstNameInput, firstNameError);
+    validateName(e.target.value.trim(), firstNameInput, firstNameError);
 
 });
 
 lastNameInput.addEventListener("input", (e) => {
 
     if (!formState.hasAttemptedSubmit) return;
-    validateName(e.target.value, lastNameInput, lastNameError);
+    validateName(e.target.value.trim(), lastNameInput, lastNameError);
 
 });
 
 emailInput.addEventListener("input", (e) => {
 
     if (!formState.hasAttemptedSubmit) return;
-    validateEmail(e.target.value);
+    validateEmail(e.target.value.trim());
 
 });
 
 messageInput.addEventListener("input", (e) => {
 
     if (!formState.hasAttemptedSubmit) return;
-    validateMessage(e.target.value);
+    validateMessage(e.target.value.trim());
     
 });
 
@@ -206,6 +215,13 @@ function updateSelectionFieldError(isValid, error, result) {
 
 // Displays the success message upon successful form submission
 function showSuccessMessage () {
+
+    // Removes the existing success message when filling out forms again
+    const existingSuccessMessage = document.querySelector(".toast");
+    if(existingSuccessMessage) {
+        existingSuccessMessage.remove();
+    }
+
     const toastElementString = `
         <div class="toast">
             <div class="toast__header">
@@ -225,31 +241,22 @@ function showSuccessMessage () {
 
 // This brings the user to the first input field with error in the form.
 // Prioritizes errors at the very top.
-function focusFirstInputError() {
+function focusFirstInputError(formResult) {
 
-    const fields = [firstNameInput, lastNameInput, emailInput];
+    const {firstName, lastName, email, queryType, message, consent} = formResult;
 
-    for (const field of fields) {
-
-        if(!field.validity.valid) {
-            field.focus();
-            return;
-        }
-    }
-
-    if(!queryInputs[0].checked && !queryInputs[1].checked) {
+    if (!firstName) {
+        firstNameInput.focus();
+    } else if (!lastName) {
+        lastNameInput.focus();
+    } else if (!email) {
+        emailInput.focus();
+    } else if (!queryType) {
         queryInputs[0].focus();
-        return;
-    }
-
-    if(!messageInput.validity.valid) {
+    } else if (!message) {
         messageInput.focus();
-        return;
-    }
-
-    if (!consentInput.checked) {
+    } else if (!consent) {
         consentInput.focus({ focusVisible: true });
-        return;
     }
 
 }

@@ -261,7 +261,7 @@ body {
     transform: translateY(-50%);
     width: 18px;
     height: 18px;
-    padding: 6px;
+    padding: var(--space-100);
     border: 2px solid var(--clr-grey-500);
 }
 
@@ -306,7 +306,7 @@ body {
     background-color: var(--clr-grey-900);
 }
 
-.form__submit:focus-within {
+.form__submit:focus-visible {
     outline: 2px solid var(--clr-green-600);
     outline-offset: 2px;
 }
@@ -319,6 +319,7 @@ body {
     border-radius: var(--rounded-sm);
     padding: var(--space-300);
     max-width: 28.125rem;
+    width: 90%;
     margin: 0 auto;
     animation: slideIn 800ms ease forwards;
 }   
@@ -350,6 +351,7 @@ body {
     }
 }
 
+/* Tablet */
 @media screen and (min-width: 48rem) {
 
     .form__name, .form__query-options {
