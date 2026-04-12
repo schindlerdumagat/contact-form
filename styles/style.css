@@ -320,6 +320,7 @@ body {
     position: absolute;
     opacity: 0;
     inset: 0;
+    cursor: pointer;
 }
 
 .form__consent-error {
