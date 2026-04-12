@@ -176,6 +176,10 @@ body {
     color: var(--clr-red);
 }
 
+.form__error--active {
+    display: block;
+}
+
 .form__name {
     display: grid;
     gap: var(--space-300);
