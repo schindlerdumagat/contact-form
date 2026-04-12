@@ -185,36 +185,8 @@ body {
     gap: var(--space-300);
 }
 
-.form__first-name--error .form__input:not(:focus, :hover) {
-    border-color: var(--clr-red);
-}
-
-.form__first-name--error .form__error {
-    display: block;
-}
-
-.form__last-name--error .form__input:not(:focus, :hover) {
-    border-color: var(--clr-red);
-}
-
-.form__last-name--error .form__error {
-    display: block;
-}
-
-.form__email--error .form__input:not(:focus, :hover) {
-    border-color: var(--clr-red);
-}
-
-.form__email--error .form__error {
-    display: block;
-}
-
 .form__query {
     border: none;
-}
-
-.form__query--error .form__error {
-    display: block;
 }
 
 .form__query-title {
@@ -270,20 +242,8 @@ body {
     margin-block-start: var(--space-200);
 }
 
-.form__message--error .form__input:not(:focus, :hover) {
-    border-color: var(--clr-red);
-}
-
-.form__message--error .form__error {
-    display: block;
-}
-
 .form__consent {
     margin-block: var(--space-500);
-}
-
-.form__consent--error .form__error {
-    display: block;
 }
 
 .form__consent-field {
