@@ -223,7 +223,7 @@ function showSuccessMessage () {
     }
 
     const toastElementString = `
-        <div class="toast">
+        <div class="toast" role="status">
             <div class="toast__header">
                 <img src="./assets/images/icon-success-check.svg" alt="" width="20" height="20">
                 <strong class="toast__title">Message Sent!</strong>
