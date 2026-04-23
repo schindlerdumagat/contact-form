@@ -203,7 +203,7 @@ body {
     padding-inline-start: var(--space-750);
 }
 
-.form__query-option:has(.form__query-input:focus) {
+.form__query-option:focus-within {
     outline: 1px solid var(--clr-green-600);
     background-color: var(--clr-green-200);   
 }
